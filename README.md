@@ -101,6 +101,25 @@ This folder contains files related to the dataset.
 
 You can use a fasta file (--fasta) and antigen's pdb file(--pdb). The epitope information can be provided by specifying the residue numbers in the antigen pdb file.
 
+To facilitate subsequent processing, you need to prepare a FASTA file and a PDB file. Your FASTA file should follow this structure (see examples folder for reference):
+
+```
+>H  # Heavy chain ID
+VQLVESGGGLVQPGGSLRLSCAASXXXXXXXYMNWVRQAPGKGLEWVSVVXXXXXTFYTDSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCARXXXXXXXXXXXXXXWGQGTMVTVSS
+>L # Light chain ID
+DIQMTQSPSSLSASVGDRVSITCXXXXXXXXXXXWYQQKPGKAPKLLISXXXXXXXGVPSRFSGSGSGTDFTLTITSLQPEDFATYYCXXXXXXXXXXXFGGGTKVEIK
+>A # Antigen ID (must match PDB file)
+NLCPFDEVFNATRFASVYAWNRKRISNCVADYSVLYNFAPFFAFKCYGVSPTKLNDLCFTNVYADSFVIRGNEVSQIAPGQTGNIADYNYKLPDDFTGCVIAWNSNKLDSKVGGNYNYRYRLFRKSNLKPFERDISTEIYQAGNKPCNGVAGVNCYFPLQSYGFRPTYGVGHQPYRVVVLSFELLHAPATVCGP
+```
+* 'X' indicates regions to be designed
+* To obtain antigen epitopes, use this command:
+
+```
+python design.py --fasta examples/fasta.files.native/8iv5_A_B_G.fasta --antigen examples/pdb.files.native/8iv5_A_B_G.pdb --cal_epitope
+
+The antigen parameter specifies the known complex structure, and fasta specifies the known complex sequence. This will return the required epitope format for subsequent steps. You can then copy the epitope information and replace the fasta sequence with your design sequence for antibody design.
+```
+
 
 #### Example 1: predicting the structure of an antibody & nanobody against a given antigen and binding epitopes using IgGM 
 * If a complex structure is available in the PDB, the command will automatically generate epitope information. You can delete the epitope information from the command(--epitope) if needed.

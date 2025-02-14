@@ -96,6 +96,25 @@ Test set we construct in our paper
 
 你可以使用fasta文件作为序列的输入，pdb文件作为抗原的输入，示例文件位于examples文件夹中。
 
+为了方便后续处理，你需要准备一个fasta文件和一个pdb文件，你的fasta文件应该具有以下的结构，具体可以参考examples文件夹。
+
+```
+>H  # 重链ID
+VQLVESGGGLVQPGGSLRLSCAASXXXXXXXYMNWVRQAPGKGLEWVSVVXXXXXTFYTDSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCARXXXXXXXXXXXXXXWGQGTMVTVSS
+>L # 轻链ID
+DIQMTQSPSSLSASVGDRVSITCXXXXXXXXXXXWYQQKPGKAPKLLISXXXXXXXGVPSRFSGSGSGTDFTLTITSLQPEDFATYYCXXXXXXXXXXXFGGGTKVEIK
+>A # 抗原ID, 需要跟pdb文件保持一致
+NLCPFDEVFNATRFASVYAWNRKRISNCVADYSVLYNFAPFFAFKCYGVSPTKLNDLCFTNVYADSFVIRGNEVSQIAPGQTGNIADYNYKLPDDFTGCVIAWNSNKLDSKVGGNYNYRYRLFRKSNLKPFERDISTEIYQAGNKPCNGVAGVNCYFPLQSYGFRPTYGVGHQPYRVVVLSFELLHAPATVCGP
+```
+* 'X'表示需要设计的区域
+* 如果需要获得抗原的表位，可以使用以下命令
+
+```
+python design.py --fasta examples/fasta.files.native/8iv5_A_B_G.fasta --antigen examples/pdb.files.native/8iv5_A_B_G.pdb --cal_epitope
+
+antigen表示已知复合物的结构，fasta表示已知复合物的序列，会返回后续需要的epitope格式，复制之后即可将fasta替换成你需要设计的序列进行设计
+```
+
 #### 示例一：使用IgGM预测抗体结构和纳米抗体结构
 * 如果PDB中有复合物的结构，该命令将自动生成表位信息，这种情况下可以删除（--epitope）。
 ```
@@ -105,7 +124,6 @@ python design.py --fasta examples/fasta.files.native/8iv5_A_B_G.fasta --antigen 
 # nanobody
 python design.py --fasta examples/fasta.files.native/8q94_C_NA_A.fasta --antigen examples/pdb.files.native/8q94_C_NA_A.pdb --epitope 41 42 43 44 45 46 49 50 70 71 73 74
 ```
-### IgGM-Ag
 
 #### 示例二：使用IgGM设计针对给定抗原的抗体和纳米抗体CDR H3环的序列，并预测整体结构。
 ```

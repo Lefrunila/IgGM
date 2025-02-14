@@ -52,6 +52,12 @@ def parse_args():
         default=1,
         help='number of samples for each input',
     )
+    parser.add_argument(
+        '--cal_epitope', '-ce',
+        action='store_true',
+        default=False,
+        help='if use, will calculate epitope from antigen pdb',
+    )
     args = parser.parse_args()
 
     return args
@@ -59,13 +65,18 @@ def parse_args():
 
 def predict(args):
     """Predict antibody & antigen sequence and structures w/ pre-trained IgGM-Ag models."""
-    fasta_path = args.fasta
     pdb_path = args.antigen
+    fasta_path = args.fasta
 
     sequences, ids, _ = parse_fasta(fasta_path)
     assert len(sequences) in (1, 2, 3), f"must be 1, 2 or 3 chains in fasta file"
     chains = [{"sequence": seq, "id": seq_id} for seq, seq_id in zip(sequences, ids) if seq_id != ids[-1]]
     _, basename = os.path.split(fasta_path)
+    if args.cal_epitope:
+        epitope = cal_ppi(pdb_path, ids)
+        epitope = torch.nonzero(epitope).flatten().tolist()
+        print(f"epitope: {' '.join(str(i) for i in epitope)}")
+        return
     name = basename.split(".")[0]
     output = f"{args.output}/{name}.pdb"
 
@@ -83,7 +94,7 @@ def predict(args):
                     "cord": atom_cord,
                     "cmsk": atom_cmsk,
                     "epitope": epitope,
-                    "id": "A"})
+                    "id": ids[-1]})
 
 
     batches = [

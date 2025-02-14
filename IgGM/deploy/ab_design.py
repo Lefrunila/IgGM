@@ -39,12 +39,13 @@ class AbDesigner(BaseDesigner):
         """Build an input dict for model inference."""
         num_chains = len(chains)
         inputs = super()._build_inputs(chains)
+        chain_ids = inputs['base']['chain_ids']
         if num_chains == 2:  # nanobody, two chains, H and A
-            ligand_id = 'H'
+            ligand_id = chain_ids[0]
         else:  # antibody, three chains, H, L, A
-            ligand_id = ':'.join(['H', 'L'])  # pseudo chain ID for the VH-VL complex
-            h_seq = inputs["H"]["base"]["seq"]
-            l_seq = inputs["L"]["base"]["seq"]
+            ligand_id = ':'.join(chain_ids[:2])  # pseudo chain ID for the VH-VL complex
+            h_seq = inputs[chain_ids[0]]["base"]["seq"]
+            l_seq = inputs[chain_ids[1]]["base"]["seq"]
             inputs[ligand_id] = {
                 'base': {'seq': h_seq + l_seq},
                 'asym_id': get_asym_ids([h_seq, l_seq]).unsqueeze(dim=0),
@@ -52,9 +53,9 @@ class AbDesigner(BaseDesigner):
             }
 
         inputs["base"]["ligand_id"] = ligand_id
-        inputs["base"]["receptor_id"] = "A"
+        inputs["base"]["receptor_id"] = chain_ids[-1]
 
-        complex_id = ':'.join([ligand_id, 'A'])  # H:A or H:L:A
+        complex_id = ':'.join([ligand_id, chain_ids[-1]])  # H:A or H:L:A
         prot_data = self.init_prot_data(inputs, complex_id) # initialize the protein data from sample noise
 
         prot_data["base"]["complex_id"] = complex_id
@@ -79,7 +80,7 @@ class AbDesigner(BaseDesigner):
         inputs_addi = None  # will be initialized at the end of first iterations
 
         for idx_step in idxs_step:
-            # initialization  # use sequences & structures from the last iter.
+            # initialization # use sequences & structures from the last iter.
             aa_seqs_pred, cord_tns_pred, inputs_addi = \
                 self.__sample_cm_ss2ss(prot_data_curr, idx_step, inputs_addi, chunk_size=chunk_size)
 
