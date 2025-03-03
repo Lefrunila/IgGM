@@ -163,7 +163,11 @@ python design.py --fasta examples/fasta.files.design/8q95_B_NA_A/8q95_B_NA_A_CDR
 ```
 For a completely new antigen, you can specify epitopes to design antibodies that can bind to those epitopes.
 
+#### Example 5: To merge multiple antigen chains into one chain, you need to specify the id of the merged chain.
 
+```
+python scripts/merge_chains.py --antigen examples/pdb.files.native/8ucd.pdb --output ./outputs --merge_ids A_B_C
+```
 
 ## Citing IgGM
 

@@ -157,6 +157,11 @@ python design.py --fasta examples/fasta.files.design/8q95_B_NA_A/8q95_B_NA_A_CDR
 ```
 对于全新的抗原，您可以指定表位来设计可以与这些表位结合的抗体。
 
+#### 示例五: 合并多条抗原链到一条链，需要指定合并的链的id。
+
+```
+python scripts/merge_chains.py --antigen examples/pdb.files.native/8ucd.pdb --output ./outputs --merge_ids A_B_C
+```
 
 ## Citing IgGM
 
