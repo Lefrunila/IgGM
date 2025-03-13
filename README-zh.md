@@ -5,6 +5,7 @@
 
 [![Paper](http://img.shields.io/badge/paper-biorxiv.2024.09.19-B31B1B.svg)](https://www.biorxiv.org/content/10.1101/2024.09.19.613838)
 [![Conference](http://img.shields.io/badge/ICLR-2025-4b44ce.svg)](https://openreview.net/forum?id=zmmfsJpYcq)
+[![Homepage](http://img.shields.io/badge/Homepage-IgGM-4b44ce.svg)](https://iggm.rubo.wang)
 
 ![header](docs/IgGM_dynamic.gif)
 
