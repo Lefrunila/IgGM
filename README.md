@@ -72,6 +72,14 @@ conda activate IgGM
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.1+cu117.html
 ```
 
+**Optional:** 
+
+If you need to use PyRosetta to relax the output, please install the following versions:
+
+```shell
+pip install https://graylab.jhu.edu/download/PyRosetta4/archive/release/PyRosetta4.Debug.python310.linux.wheel/pyrosetta-2024.39+release.59628fb-cp310-cp310-linux_x86_64.whl
+```
+
 3. Download pre-trained weights under params directory
     * [Zenodo](https://zenodo.org/records/13790269)
 
@@ -103,6 +111,8 @@ This folder contains files related to the dataset.
 You can use a fasta file (--fasta) and antigen's pdb file(--pdb). The epitope information can be provided by specifying the residue numbers in the antigen pdb file.
 
 To facilitate subsequent processing, you need to prepare a FASTA file and a PDB file. Your FASTA file should follow this structure (see examples folder for reference):
+
+**Optional: All commands you can use PyRosetta to slack the output by adding ''--relax'' or -r.**
 
 ```
 >H  # Heavy chain ID

@@ -62,6 +62,14 @@ conda env create -n IgGM -f environment.yaml
 conda activate IgGM
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.1+cu117.html
 ```
+**可选:** 
+
+如果您需要使用relax输出，请安装以下版本的PyRosetta：
+
+```shell
+pip install https://graylab.jhu.edu/download/PyRosetta4/archive/release/PyRosetta4.Debug.python310.linux.wheel/pyrosetta-2024.39+release.59628fb-cp310-cp310-linux_x86_64.whl
+```
+
 3. 下载模型(可选，当运行代码时，预训练权重将自动下载)
     * [Zenodo](https://zenodo.org/records/13337550)
 
@@ -96,6 +104,8 @@ Test set we construct in our paper
 ## 测试样例
 
 你可以使用fasta文件作为序列的输入，pdb文件作为抗原的输入，示例文件位于examples文件夹中。
+
+**可选：所有输出都可以使用pyrosetta来进行relax，只需要通过添加' --relax''或-r。
 
 为了方便后续处理，你需要准备一个fasta文件和一个pdb文件，你的fasta文件应该具有以下的结构，具体可以参考examples文件夹。
 

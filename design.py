@@ -58,6 +58,11 @@ def parse_args():
         default=False,
         help='if use, will calculate epitope from antigen pdb',
     )
+    parser.add_argument(
+        '--relax', '-r',
+        action='store_true',
+        help='relax structures after design',
+    )
     args = parser.parse_args()
 
     return args
@@ -119,7 +124,7 @@ def predict(args):
     chunk_size = args.chunk_size
     print(f"#inference samples: {len(batches)}")
     for task in tqdm.tqdm(batches):
-        designer.infer_pdb(task["chains"], filename=task["output"], chunk_size=chunk_size)
+        designer.infer_pdb(task["chains"], filename=task["output"], chunk_size=chunk_size, relax=args.relax)
 
 
 def main():
