@@ -107,7 +107,7 @@ Test set we construct in our paper
 
 * **可选：**
   * 所有命令您可以使用Pyrosetta通过添加"--relax"或"-r" 来relax输出。
-  * 所有命令您可以通过添加"--max_antigen_size"或''-mas''来指定抗原的最大长度，以避免内存避免内存。
+  * 所有命令您可以通过添加"--max_antigen_size 384"或''-mas 384''来指定抗原的最大截断长度为384，以避免内存避免内存。
 
 为了方便后续处理，你需要准备一个fasta文件和一个pdb文件，你的fasta文件应该具有以下的结构，具体可以参考examples文件夹。
 
