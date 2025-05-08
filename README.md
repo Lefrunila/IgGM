@@ -110,9 +110,12 @@ This folder contains files related to the dataset.
 
 You can use a fasta file (--fasta) and antigen's pdb file(--pdb). The epitope information can be provided by specifying the residue numbers in the antigen pdb file.
 
+* **Optional:**
+  * All commands you can use PyRosetta to slack the output by adding ''--relax'' or -r.**
+  * All commands you can specify the maximum length of the antigen to avoid memory out of memory by adding ''--max_antigen_size'' or ''-mas''.
+
 To facilitate subsequent processing, you need to prepare a FASTA file and a PDB file. Your FASTA file should follow this structure (see examples folder for reference):
 
-**Optional: All commands you can use PyRosetta to slack the output by adding ''--relax'' or -r.**
 
 ```
 >H  # Heavy chain ID

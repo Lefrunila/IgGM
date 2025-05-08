@@ -105,7 +105,9 @@ Test set we construct in our paper
 
 你可以使用fasta文件作为序列的输入，pdb文件作为抗原的输入，示例文件位于examples文件夹中。
 
-**可选：所有输出都可以使用pyrosetta来进行relax，只需要通过添加' --relax''或-r。
+* **可选：**
+  * 所有命令您可以使用Pyrosetta通过添加"--relax"或"-r" 来relax输出。
+  * 所有命令您可以通过添加"--max_antigen_size"或''-mas''来指定抗原的最大长度，以避免内存避免内存。
 
 为了方便后续处理，你需要准备一个fasta文件和一个pdb文件，你的fasta文件应该具有以下的结构，具体可以参考examples文件夹。
 

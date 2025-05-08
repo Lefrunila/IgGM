@@ -8,6 +8,7 @@ from .prot_struct import ProtStruct
 from .prot_converter import ProtConverter
 from .pdb_fixer import PdbFixer
 
+
 def cal_ppi(pdb_path, complex_ids):
     """Calculate PPI sites"""
     prot_data = {}
@@ -33,3 +34,36 @@ def cal_ppi(pdb_path, complex_ids):
     prot_data[receptor_id] = {"seq": aa_seq, "cord": atom_cord, "cmsk": atom_cmsk}
     ppi_data = calc_ppi_sites(prot_data, [receptor_id, ligand_id])
     return ppi_data[receptor_id]
+
+
+def crop_sequence_with_epitope(sequence, coords, masks, epitope, contact=None, max_len=384):
+    if len(sequence) <= max_len:
+        return sequence, coords, masks, epitope, contact
+
+    # Find regions with epitope=1
+    epitope_indices = torch.where(epitope == 1)[0]
+    if len(epitope_indices) == 0:
+        # If no epitope regions, take center portion
+        start = (len(sequence) - max_len) // 2
+        end = start + max_len
+    else:
+        # Calculate center of epitope region
+        epitope_center = epitope_indices.float().mean().int()
+
+        # Calculate start and end to center the window around epitope
+        start = max(0, min(
+            len(sequence) - max_len,  # Don't exceed sequence length
+            epitope_center - max_len // 2  # Center window on epitope
+        ))
+        end = start + max_len
+
+    # Crop all arrays
+    sequence = sequence[start:end]
+    coords = coords[start:end]
+    masks = masks[start:end]
+    epitope = epitope[start:end]
+
+    if contact is not None:
+        contact = contact[start:end, start:end]
+
+    return sequence, coords, masks, epitope, contact

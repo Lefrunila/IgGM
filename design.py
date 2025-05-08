@@ -7,7 +7,7 @@ import sys
 import torch
 import tqdm
 
-from IgGM.protein import cal_ppi
+from IgGM.protein import cal_ppi, crop_sequence_with_epitope
 
 sys.path.append('.')
 
@@ -63,6 +63,12 @@ def parse_args():
         action='store_true',
         help='relax structures after design',
     )
+    parser.add_argument(
+        '--max_antigen_size', '-mas',
+        type=int,
+        default=2000,
+        help='max size of antigen chain, default is 2000',
+    )
     args = parser.parse_args()
 
     return args
@@ -95,6 +101,11 @@ def predict(args):
         epitope = torch.zeros(len(aa_seq))
         for i in args.epitope:
             epitope[i] = 1
+
+    if len(aa_seq) > args.max_antigen_size:
+        aa_seq, atom_cord, atom_cmsk, epitope, _ = crop_sequence_with_epitope(
+            aa_seq, atom_cord, atom_cmsk, epitope, max_len=args.max_antigen_size
+        )
     chains.append({"sequence": aa_seq,
                     "cord": atom_cord,
                     "cmsk": atom_cmsk,
