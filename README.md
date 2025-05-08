@@ -112,7 +112,7 @@ You can use a fasta file (--fasta) and antigen's pdb file(--pdb). The epitope in
 
 * **Optional:**
   * All commands you can use PyRosetta to slack the output by adding ''--relax'' or -r.
-  * All commands you can specify the maximum length of the antigen to avoid memory out of memory by adding ''--max_antigen_size 384'' or ''-mas 384'' used to specify the intercept length of the antigen to be 384.
+  * All commands you can specify the maximum length of the antigen to avoid memory out of memory by adding ''--max_antigen_size 384'' or ''-mas 384'' to specify the intercept length of the antigen to be 384.
 
 To facilitate subsequent processing, you need to prepare a FASTA file and a PDB file. Your FASTA file should follow this structure (see examples folder for reference):
 
