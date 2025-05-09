@@ -18,7 +18,7 @@ def Rosetta_relax(pdb_file):
     from pyrosetta.rosetta.core.select.movemap import MoveMapFactory, move_map_action
     from pyrosetta.rosetta.protocols.minimization_packing import PackRotamersMover
     from pyrosetta.rosetta.protocols.relax import FastRelax
-    # cdr_dict = cdr_domain(pdb_file)
+
     print(f'Rosetta processing {pdb_file} for Relax')
 
     pose = pose_from_pdb(pdb_file)
