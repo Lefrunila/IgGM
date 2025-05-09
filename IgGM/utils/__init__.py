@@ -19,7 +19,7 @@ def Rosetta_relax(pdb_file):
     from pyrosetta.rosetta.protocols.minimization_packing import PackRotamersMover
     from pyrosetta.rosetta.protocols.relax import FastRelax
     # cdr_dict = cdr_domain(pdb_file)
-    logging.info(f'Rosetta processing {pdb_file} for Relax')
+    print(f'Rosetta processing {pdb_file} for Relax')
 
     pose = pose_from_pdb(pdb_file)
     scorefxn = create_score_function('ref2015')
