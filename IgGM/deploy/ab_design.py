@@ -110,7 +110,7 @@ class AbDesigner(BaseDesigner):
             raw_seqs[chain_id] = raw_seq
 
         self._output_to_fasta(inputs, outputs, filename[:-4] + ".fasta")
-        self._output_to_pdb(inputs, outputs, filename, relax=False)
+        self._output_to_pdb(inputs, outputs, filename, relax=relax)
 
 
     def __sample_cm_ss2ss(self, prot_data_curr, idx_step, inputs_addi, chunk_size=None):
