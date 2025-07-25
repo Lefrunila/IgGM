@@ -1,202 +1,118 @@
 <div align="center">
 
-# IgGM: A Generative Model for Functional Antibody and Nanobody Design
+# Colab-IgGM: An Interactive Workflow for Antibody Design
 
+[![Notebook](http://img.shields.io/badge/Notebook-GoogleColab-orange.svg)](https://colab.research.google.com/drive/1-v8-anrA5rtlZzqT-g7HtVLzK1FZQzLv?usp=sharing)
+[![iGEM Team](https://img.shields.io/badge/iGEM-UNILA--LatAm-blueviolet.svg)](https://www.instagram.com/igem_synfronteras/)
 
-[![Paper](http://img.shields.io/badge/paper-biorxiv.2024.09.19-B31B1B.svg)](https://www.biorxiv.org/content/10.1101/2024.09.19.613838)
-[![Conference](http://img.shields.io/badge/ICLR-2025-4b44ce.svg)](https://openreview.net/forum?id=zmmfsJpYcq)
-[![Homepage](http://img.shields.io/badge/Homepage-IgGM-4b44ce.svg)](https://iggm.rubo.wang)
-
-![header](docs/IgGM_dynamic.gif)
+<img src="https://github.com/TencentAI4S/IgGM/raw/master/docs/IgGM_dynamic.gif" alt="IgGM Animation" height="350">
 
 </div>
 
+---
 
+## Overview
 
---------------------------------------------------------------------------------
+**Colab-IgGM** provides a user-friendly and interactive pipeline for the design of novel antibodies and nanobodies against a specific antigen epitope. This notebook is a powerful front-end for the deep learning model **IgGM**, streamlining the entire process from preparing input files to analyzing and visualizing the final designs.
 
-English | [简体中文](./README-zh.md)
+This workflow was created to support the **NANODEN** project by the **iGEM UNILA-LatAm team** for the 2025 competition. It integrates several state-of-the-art bioinformatics tools into a series of easy-to-use, sequential cells.
 
+### Key Tools Integrated
+* **Design Engine**: [IgGM](https://www.biorxiv.org/content/10.1101/2024.09.19.613838v2) for generative antibody design.
+* **Chain Annotation**: [ANARCI](https://github.com/oxpig/ANARCI?tab=readme-ov-file) for identifying VH/VL/VHH chains and numbering residues.
+* **Epitope Prediction**: [SEPPA 3.0](http://www.badd-cao.net/seppa3/) for predicting epitopes on an antigen surface.
+* **Structure Visualization**: [py3Dmol](https://3dmol.csb.pitt.edu/) for interactive 3D visualization of protein structures.
+* **(Optional) Structure Relaxation**: [PyRosetta](https://www.pyrosetta.org/) for energy minimization of the final designs.
 
+---
 
-The official implementation of our ICLR 2025 paper "IgGM: A Generative Model for Functional Antibody and Nanobody Design,"
-which can design the overall structure based on a given framework region sequence,
-as well as tools for CDR region sequences,
-and can design corresponding antibodies against specific epitopes.
+## Workflow
 
-We also provide:
+The notebook is designed as a modular, step-by-step pipeline. The general workflow is as follows:
 
-The test set (SAb-23H2) constructed in the paper includes the latest antigen-antibody complexes published since the second half of 2023, with rigorous deduplication applied.
+PDB Input ➔ 1. Clean PDB (Remove non-protein) ➔ 2. Analyze Chains (Identify VH/VL/VHH) ➔ 3. Prepare Design Files (Mask CDRs, Merge Antigen, Rename Chains) ➔ 4. Define Epitope ➔ 5. Run IgGM Design ➔ 6. Visualize & Align Results
 
+---
 
-Any publication that discloses findings arising from using this source code or the model parameters
-should cite the IgGM paper.
+## How to Use
 
-Please also refer to the Supplementary Information for a detailed description of the method.
+To get started, open the `Colab_IgGM.ipynb` notebook in Google Colab. The notebook is divided into numbered cells that should be run in order. Detailed instructions are provided in each cell's title and markdown text, also at the bottom of the notebook.
 
-If you have any questions, please contact the IgGM team at wangrubo@hotmail.com, fandiwu@tencent.com.
+### **Part 1: Setup & Pre-processing**
+1.  **Install Dependencies:** Run the first few cells to install all necessary libraries and tools like `condacolab`, `pyrosettacolabsetup`, `ANARCI`, and `HMMER`. This may require restarting the Colab session once.
+2.  **Create Input Folder:** The notebook will automatically create the necessary directory structure, including `/content/IgGM/inputs`.
 
-For business partnership opportunities, please contact leslielwang@tencent.com.
+### **Part 2: PDB Pre-processing**
+1.  **Clean PDB:** Upload your PDB file. The script will remove all non-protein atoms (water, ligands, ions) and create a `cleaned_` version of your file, displaying both structures for comparison.
+2.  **(Optional) Remove Chains:** If your antigen has multiple chains and some are not part of the epitope, you can remove them to simplify the structure.
+3.  **Rename Chains:** For the design step, IgGM requires the antibody heavy chain to be named `H` and the light chain `L`. Use this cell to rename the chains identified by ANARCI.
 
+### **Part 3: Epitope & Design File Generation**
+1.  **Identify Antibody Chains:** The notebook uses **ANARCI** to analyze your cleaned PDB, identify which chains are VH, VL, or VHH, and saves the sequences to a FASTA file.
+2.  **Mask CDRs for Redesign:** A new FASTA file is created where the CDRs of the identified antibody chains are masked with `X`'s. This file tells IgGM which regions to redesign.
+3.  **Merge Antigen Chains:** IgGM requires the antigen to be a single chain. This cell merges all antigen chains into a new chain `A`.
+4.  **Define Epitope:** You have two options:
+    * **From Complex (Recommended):** If you started with an antibody-antigen complex, the script can automatically identify the epitope residues.
+    * **From Antigen Only:** If you only have an antigen structure, follow the instructions to use the **SEPPA 3.0** server. Then, upload the results to the notebook, which will cluster the predicted residues into epitope "hotspots" for IgGM.
 
-## OverView
+### **Part 4: Antibody Design and Visualization**
+1.  **Run IgGM Design:** This is the core step. Fill in the paths to your prepared FASTA and PDB files, select an epitope, and adjust the design parameters (number of samples, relaxation, etc.). Run the cell to start the design process.
+2.  **Visualize Results:** After the design is complete, use this cell to compare your original input structure with one of the new designs. It will automatically align the structures, calculate the RMSD, and provide three viewers: input, output, and an overlapped comparison.
 
+---
 
+### Future Work and Potential
 
-### Main Results(SAb-23H2-Ab)
+The current workflow successfully implements a powerful pipeline for antibody analysis and design preparation using **IgGM**. The next frontier is to integrate the complete, end-to-end functional engineering capabilities demonstrated in the groundbreaking work by Yu Kong, Jiale Shi, Fandi Wu, and colleagues.
 
-|      **Model**      | **AAR-CDR-H3** | **RMSD-CDR-H3** | **DockQ** |
-|:-------------------:|:--------------:|:---------------:|:---------:|
-|   DiffAb(IgFold)    |     0.214      |      2.358      |   0.022   |
-| DiffAb(AlphaFold 3) |     0.226      |      2.300      |   0.208   |
-|    MEAN(IgFold)     |     0.248      |      2.741      |   0.022   |
-|  MEAN(AlphaFold 3)  |     0.246      |      2.646      |   0.207   |
-|       dyMEAN        |     0.294      |      2.454      |   0.079   |
-|     **IgGM**      |     0.360      |      2.131      |   0.246   |
+Their paper introduces **TFDesign-sdAb**, a framework whose power comes from the synergy of two novel components working together: a specialized generator and an expert ranker. The key innovations that make this approach so successful are:
 
+* **A Re-architected IgGM for Framework Design:** The authors intelligently modified the IgGM model with a two-phase training strategy. This allows it to optimize not just the CDRs, but also the crucial **Framework Regions (FRs)**, which is essential for engineering new functions like Protein A binding while preserving the antibody's original antigen affinity.
 
-## Installation
+* **A Fine-Tuned A2binder for Accurate Ranking:** A generative model can create thousands of candidates, but this is only useful if the best ones can be identified. The authors demonstrated that a generic affinity model failed on sdAbs, but after **fine-tuning A2binder with a small, specific set of sdAb affinity data**, its performance improved dramatically. This expertly adapted ranker is the critical component that filters the vast design space to find the candidates with the highest chance of success.
 
-###
-1. Clone the package
-```shell
-git clone https://github.com/TencentAI4S/IgGM.git
-cd IgGM
-```
+The authors' amazing work in combining these innovations led to a remarkable **100% success rate in their specific task**: engineering Protein A binding into sdAbs that previously could not. If the repository containing the specialized **IgGM-FR** model and, most importantly, the **fine-tuned A2binder model** with its weights were made public, this Colab notebook could be transformed into a complete, all-in-one tool. It would empower researchers to go directly from an antigen structure to a small, highly enriched set of computationally validated antibody and nanobody designs that are truly ready for wet-lab synthesis and testing, massively accelerating the pace of therapeutic discovery.
 
-2. Prepare the environment
+---
 
-```shell
-conda env create -n IgGM -f environment.yaml
-conda activate IgGM
-pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.1+cu117.html
-```
+### **License Information**
 
-**Optional:** 
+The original code in this Colab notebook, created by the author, is licensed under the Apache 2.0 License.
 
-If you need to use PyRosetta to relax the output, please install the following versions:
+This notebook is a fork of and interacts with the IgGM repository. The underlying IgGM source code is provided under the PolyForm Noncommercial License 1.0.0, making it free for non-commercial, academic, and personal research purposes. Any use of this notebook must adhere to the terms of both licenses.
 
-```shell
-pip install https://graylab.jhu.edu/download/PyRosetta4/archive/release/PyRosetta4.Debug.python310.linux.wheel/pyrosetta-2024.39+release.59628fb-cp310-cp310-linux_x86_64.whl
-```
+This notebook integrates several external tools and libraries, each with its own licensing terms that must be respected:
+* **IgGM**: The source code is provided under the [**PolyForm Noncommercial License 1.0.0**](https://polyformproject.org/licenses/noncommercial/1.0.0), making it free for non-commercial, academic, and personal research purposes. Commercial use requires a separate license.
+* **SEPPA 3.0**: The web server is provided for **academic use only**. Commercial applications require contacting the authors at `zwcao@fudan.edu.cn`.
+* **PyRosetta**: Requires a separate license from Rosetta Commons. It is **free for academic and non-profit users** but requires a paid license for commercial entities.
+* **ANARCI**: Provided under the permissive [**BSD 3-Clause License**](https://opensource.org/licenses/BSD-3-Clause).
+* **HMMER**: Available under the [**GNU GPLv3**](https://www.gnu.org/licenses/gpl-3.0.html).
+* **PyTorch Geometric (PyG)**: The library and its components (`torch_scatter`, `torch_sparse`, etc.) are provided under the [**MIT License**](https://github.com/pyg-team/pytorch_geometric/blob/master/LICENSE).
+* **PyTorch**: The core deep learning framework is licensed under a permissive [**BSD-style License**](https://github.com/pytorch/pytorch/blob/main/LICENSE).
+* **Biopython**: Distributed under the liberal [**Biopython License**](https://biopython.org/wiki/License/).
+* **OpenMM**: Provided under the [**MIT License**](https://github.com/openmm/openmm/blob/main/LICENSE.txt).
+* **PDBFixer**: Provided under the [**MIT License**](https://github.com/openmm/pdbfixer/blob/main/LICENSE).
+* **py3Dmol**: Provided under the [**MIT License**](https://pypi.org/project/py3Dmol/).
+* **Condacolab**: Provided under the [**MIT License**](https://github.com/conda-incubator/condacolab/blob/main/LICENSE).
 
-3. Download pre-trained weights under params directory
-    * [Zenodo](https://zenodo.org/records/13790269)
+### **Citations & Acknowledgments**
 
-**Note**:
-If you download the weights in the folder `./checkpoints`, you can proceed directly with the following steps.
+Please cite the relevant authors and tools in any work that uses this notebook.
 
-## Dataset
-###
-Test set we construct in our paper
+**Primary Publications:**
+* **For IgGM:**
+    > Wang, Rubo et al. "IgGM: A Generative Model for Functional Antibody and Nanobody Design." *The Thirteenth International Conference on Learning Representations*, 2025.
+* **For ANARCI:**
+    > Dunbar, J. & Deane, C. M. "ANARCI: antigen receptor numbering and receptor classification." *Bioinformatics*, 32(2), 298–300 (2016).
+* **For SEPPA 3.0:**
+    > Zhou, C., Chen, Z., Zhang, L. et al. "SEPPA 3.0—enhanced spatial epitope prediction enabling glycoprotein antigens." *Nucleic Acids Research*, 47(W1), W388–W394 (2019).
+* **For PyRosetta:**
+    > Chaudhury, S., Lyskov, S. & Gray, J. J. "PyRosetta: a script-based interface for implementing molecular modeling algorithms using Rosetta." *Bioinformatics*, 26(5), 689-691 (2010).
 
-  * [Zenodo](https://zenodo.org/records/13790269/files/IgGM_Test_set.tar.gz?download=1) (download from zenodo)
-
-![header](docs/dataset.png)
-
-This folder contains files related to the dataset.
-- SAb-23-H2-Ab
-  - **prot_ids.txt**: Text file containing protein IDs.
-  - **fasta.files.native**: Original fasta file (H represents heavy chain, L represents light chain, A represents antigen, corresponding to the last three letters in the ID).
-  - **pdb.files.native**: Original pdb structure file (H represents heavy chain, L represents light chain, A represents antigen, corresponding to the last three letters in the ID).
-  - **fasta.files.design**: Contains the masked CDR area fasta file, where X represents mask.
-
-- SAb-23-H2-Nano
-  - **prot_ids.txt**: Text file containing protein IDs.
-  - **fasta.files.native**: Original fasta file (H represents antibody, NA represents absence, and A represents antigen, which correspond to the last three letters in the ID.).
-  - **pdb.files.native**: Original pdb structure file (H represents antibody, NA represents absence, and A represents antigen, which correspond to the last three letters in the ID.).
-  - **fasta.files.design**: Contains the masked CDR area fasta file, where X represents mask.
-## Quick Start
-
-You can use a fasta file (--fasta) and antigen's pdb file(--pdb). The epitope information can be provided by specifying the residue numbers in the antigen pdb file.
-
-* **Optional:**
-  * All commands you can use PyRosetta to slack the output by adding ''--relax'' or -r.
-  * All commands you can specify the maximum length of the antigen to avoid memory out of memory by adding ''--max_antigen_size 384'' or ''-mas 384'' to specify the intercept length of the antigen to be 384.
-
-To facilitate subsequent processing, you need to prepare a FASTA file and a PDB file. Your FASTA file should follow this structure (see examples folder for reference):
-
-
-```
->H  # Heavy chain ID
-VQLVESGGGLVQPGGSLRLSCAASXXXXXXXYMNWVRQAPGKGLEWVSVVXXXXXTFYTDSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCARXXXXXXXXXXXXXXWGQGTMVTVSS
->L # Light chain ID
-DIQMTQSPSSLSASVGDRVSITCXXXXXXXXXXXWYQQKPGKAPKLLISXXXXXXXGVPSRFSGSGSGTDFTLTITSLQPEDFATYYCXXXXXXXXXXXFGGGTKVEIK
->A # Antigen ID (must match PDB file)
-NLCPFDEVFNATRFASVYAWNRKRISNCVADYSVLYNFAPFFAFKCYGVSPTKLNDLCFTNVYADSFVIRGNEVSQIAPGQTGNIADYNYKLPDDFTGCVIAWNSNKLDSKVGGNYNYRYRLFRKSNLKPFERDISTEIYQAGNKPCNGVAGVNCYFPLQSYGFRPTYGVGHQPYRVVVLSFELLHAPATVCGP
-```
-* 'X' indicates regions to be designed
-* To obtain antigen epitopes, use this command:
-
-```
-python design.py --fasta examples/fasta.files.native/8iv5_A_B_G.fasta --antigen examples/pdb.files.native/8iv5_A_B_G.pdb --cal_epitope
-
-The antigen parameter specifies the known complex structure, and fasta specifies the known complex sequence. This will return the required epitope format for subsequent steps. You can then copy the epitope information and replace the fasta sequence with your design sequence for antibody design.
-```
-
-
-#### Example 1: predicting the structure of an antibody & nanobody against a given antigen and binding epitopes using IgGM 
-* If a complex structure is available in the PDB, the command will automatically generate epitope information. You can delete the epitope information from the command(--epitope) if needed.
-```
-# antibody
-python design.py --fasta examples/fasta.files.native/8iv5_A_B_G.fasta --antigen examples/pdb.files.native/8iv5_A_B_G.pdb --epitope 126 127 129 145 146 147 148 149 150 155 156 157 158 160 161 162 163 164
-
-# nanobody
-python design.py --fasta examples/fasta.files.native/8q94_C_NA_A.fasta --antigen examples/pdb.files.native/8q94_C_NA_A.pdb --epitope 41 42 43 44 45 46 49 50 70 71 73 74
-```
-
-#### Example 2: redesign the sequence of an antibody & nanobody CDR H3 loops against a given antigen using IgGM, and predict the overall structure.
-```
-# antibody
-python design.py --fasta examples/fasta.files.design/8hpu_M_N_A/8hpu_M_N_A_CDR_H3.fasta --antigen examples/pdb.files.native/8hpu_M_N_A.pdb
-
-# nanobody
-python design.py --fasta examples/fasta.files.design/8q95_B_NA_A/8q95_B_NA_A_CDR_3.fasta --antigen examples/pdb.files.native/8q95_B_NA_A.pdb
-```
-
-#### Example 3:  design the sequence of an antibody & nanobody CDR loops against a given antigen using IgGM, and predict the overall structure.
-```
-# antibody
-python design.py --fasta examples/fasta.files.design/8hpu_M_N_A/8hpu_M_N_A_CDR_All.fasta --antigen examples/pdb.files.native/8hpu_M_N_A.pdb
-
-# nanobody
-python design.py --fasta examples/fasta.files.design/8q95_B_NA_A/8q95_B_NA_A_CDR_All.fasta --antigen examples/pdb.files.native/8q95_B_NA_A.pdb
-```
-
-You can specify other regions for design; more examples can be explored in the examples folder.
-
-#### Example 4: Design the sequences of antibody and nanobody CDR loops based on given antigens and binding epitopes, without the need to provide complex structural information, and predict the overall structure.
-
-* **It is possible to design antibodies targeting a new epitope.**
-```
-# antibody
-python design.py --fasta examples/fasta.files.design/8hpu_M_N_A/8hpu_M_N_A_CDR_All.fasta --antigen examples/pdb.files.native/8hpu_M_N_A.pdb --epitope 126 127 129 145 146 147 148 149 150 155 156 157 158 160 161 162 163 164
-
-# nanobody
-python design.py --fasta examples/fasta.files.design/8q95_B_NA_A/8q95_B_NA_A_CDR_All.fasta --antigen examples/pdb.files.native/8q95_B_NA_A.pdb --epitope 41 42 43 44 45 46 49 50 70 71 73 74
-```
-For a completely new antigen, you can specify epitopes to design antibodies that can bind to those epitopes.
-
-#### Example 5: To merge multiple antigen chains into one chain, you need to specify the id of the merged chain.
-
-```
-python scripts/merge_chains.py --antigen examples/pdb.files.native/8ucd.pdb --output ./outputs --merge_ids A_B_C
-```
-
-## Citing IgGM
-
-If you use IgGM in your research, please cite our paper
-
-```BibTeX
-@inproceedings{
-wang2025iggm,
-title={Ig{GM}: A Generative Model for Functional Antibody and Nanobody Design},
-author={Wang, Rubo and Wu, Fandi and Gao, Xingyu and Wu, Jiaxiang and Zhao, Peilin and Yao, Jianhua},
-booktitle={The Thirteenth International Conference on Learning Representations},
-year={2025},
-url={https://openreview.net/forum?id=zmmfsJpYcq}
-}
-
-```
+**Acknowledgments:**
+* We thank the **IgGM team** for developing their excellent model and making the code available for non-commercial research.
+* We thank the **Oxford Protein Informatics Group (OPIG)** for creating the indispensable **ANARCI** tool and the **Cao Lab** for developing and maintaining the **SEPPA 3.0** server.
+* A special thanks to **David Koes** for his awesome **py3Dmol** plugin, which makes the interactive visualizations in this notebook possible.
+* This Colab notebook was created and adapted by **Luis Eduardo Figueroa** (`lef.rivera.2021@aluno.unila.edu.br`) for the **NANODEN** project of the **iGEM UNILA-LatAm team**. Follow our progress on Instagram: **[@igem_synfronteras](https://www.instagram.com/igem_synfronteras/)**.
 
 
