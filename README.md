@@ -1,11 +1,11 @@
 <div align="center">
 
-# Colab-IgGM: An Interactive Workflow for Antibody Design
+# Colab-IgGM: An Interactive Workflow for Antibody and Nanobody Design
 
 [![Notebook](http://img.shields.io/badge/Notebook-GoogleColab-orange.svg)](https://colab.research.google.com/drive/1-v8-anrA5rtlZzqT-g7HtVLzK1FZQzLv?usp=sharing)
 [![iGEM Team](https://img.shields.io/badge/iGEM-UNILA--LatAm-blueviolet.svg)](https://www.instagram.com/igem_synfronteras/)
 
-<img src="https://github.com/TencentAI4S/IgGM/raw/master/docs/IgGM_dynamic.gif" alt="IgGM Animation" height="350">
+<img src="https://github.com/Lefrunila/Colab-IgGM/blob/master/ezgif-3bc0745dd178ef.gif" alt="IgGM Animation" height="350">
 
 </div>
 
