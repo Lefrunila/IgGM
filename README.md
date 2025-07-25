@@ -79,12 +79,10 @@ The authors' amazing work in combining these innovations led to a remarkable **1
 
 The original code in this Colab notebook, created by the author, is licensed under the Apache 2.0 License.
 
-This notebook is a fork of and interacts with the IgGM repository. The underlying IgGM source code is provided under the PolyForm Noncommercial License 1.0.0, making it free for non-commercial, academic, and personal research purposes. Any use of this notebook must adhere to the terms of both licenses.
+This notebook is a fork of and interacts with the IgGM repository. The underlying IgGM source code is provided under the [**PolyForm Noncommercial License 1.0.0**](https://polyformproject.org/licenses/noncommercial/1.0.0), making it free for non-commercial, academic, and personal research purposes. This notebook also integrates several external tools and libraries, each with its own licensing terms that must be respected:
 
-This notebook integrates several external tools and libraries, each with its own licensing terms that must be respected:
-* **IgGM**: The source code is provided under the [**PolyForm Noncommercial License 1.0.0**](https://polyformproject.org/licenses/noncommercial/1.0.0), making it free for non-commercial, academic, and personal research purposes. Commercial use requires a separate license.
 * **SEPPA 3.0**: The web server is provided for **academic use only**. Commercial applications require contacting the authors at `zwcao@fudan.edu.cn`.
-* **PyRosetta**: Requires a separate license from Rosetta Commons. It is **free for academic and non-profit users** but requires a paid license for commercial entities.
+* **PyRosetta**: The PyRosetta software ("Software") has been developed by the contributing researchers and institutions of the Rosetta Commons ("Developers") and made available through the University of Washington ("UW") for noncommercial, non-profit use. For more information about the Rosetta Commons, please see www.rosettacommons.org [**www.rosettacommons.org**](https://www.rosettacommons.org ). If you wish to use the Software for any commercial purposes, including fee- based service projects, you will need to execute a separate licensing agreement with the UW and pay a fee. In that case, please contact: license@uw.edu 
 * **ANARCI**: Provided under the permissive [**BSD 3-Clause License**](https://opensource.org/licenses/BSD-3-Clause).
 * **HMMER**: Available under the [**GNU GPLv3**](https://www.gnu.org/licenses/gpl-3.0.html).
 * **PyTorch Geometric (PyG)**: The library and its components (`torch_scatter`, `torch_sparse`, etc.) are provided under the [**MIT License**](https://github.com/pyg-team/pytorch_geometric/blob/master/LICENSE).
