@@ -22,7 +22,7 @@ This workflow was created to support the **NANODEN** project by the **iGEM UNILA
 * **Chain Annotation**: [ANARCI](https://github.com/oxpig/ANARCI?tab=readme-ov-file) for identifying VH/VL/VHH chains, numbering residues Identifying CDRs and masking them for redesign.
 * **Epitope Prediction**: [SEPPA 3.0](http://www.badd-cao.net/seppa3/) for predicting epitopes on an antigen surface.
 * **Structure Visualization**: [py3Dmol](https://3dmol.csb.pitt.edu/) for interactive 3D visualization of protein structures.
-* **(Optional) Structure Relaxation**: [PyRosetta](https://www.pyrosetta.org/) for energy minimization of the final designs.
+* **(Optional) Structure Relaxation**: [PyRosetta](https://www.pyrosetta.org/) for energy minimization of the final designs. This was already integrated in the original IgGM.
 
 ---
 
